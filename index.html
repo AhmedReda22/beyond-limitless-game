@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Beyond Limitless</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Main Menu Page -->
+<div id="mainMenu" class="page active">
+  <header class="game-header">
+    <h1>WHO WANTS TO GO</h1>
+    <h2>BEYOND LIMITLESS</h2>
+  </header>
+
+  <div class="question-numbers">
+    <div class="numbers-grid">
+      <!-- 12 question numbers for your 12 questions -->
+      <button class="question-number" data-question="0">1</button>
+      <button class="question-number" data-question="1">2</button>
+      <button class="question-number" data-question="2">3</button>
+      <button class="question-number" data-question="3">4</button>
+      <button class="question-number" data-question="4">5</button>
+      <button class="question-number" data-question="5">6</button>
+      <button class="question-number" data-question="6">7</button>
+      <button class="question-number" data-question="7">8</button>
+      <button class="question-number" data-question="8">9</button>
+      <button class="question-number" data-question="9">10</button>
+      <button class="question-number" data-question="10">11</button>
+      <button class="question-number" data-question="11">12</button>
+    </div>
+  </div>
+
+  <button id="startGame" class="start-btn">START GAME</button>
+</div>
+
+<!-- Game Page -->
+<div id="gamePage" class="page">
+  <div class="game-container">
+    <header class="game-header">
+      <button id="homeBtn" class="home-btn">
+        <i class="fas fa-home"></i>
+      </button>
+      <h1>WHO WANTS TO GO</h1>
+      <h2>BEYOND LIMITLESS</h2>
+    </header>
+
+    <!-- Lifelines -->
+    <div class="lifelines">
+      <button id="fifty" class="lifeline">50:50</button>
+      <button id="audience" class="lifeline">👥</button>
+      <button id="phone" class="lifeline">📞</button>
+    </div>
+
+    <div class="question-box">
+      <p id="question"></p>
+    </div>
+
+    <div class="answers">
+      <button class="answer" data-index="0"></button>
+      <button class="answer" data-index="1"></button>
+      <button class="answer" data-index="2"></button>
+      <button class="answer" data-index="3"></button>
+    </div>
+    
+    <!-- زر Next الجديد -->
+    <div class="next-container">
+      <button id="nextBtn" class="next-btn" disabled>
+        <i class="fas fa-arrow-right"></i> Next Question
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Popups للـ Lifelines -->
+<div id="phonePopup" class="popup-overlay">
+  <div class="popup-content">
+    <h3>📞 Phone a Friend</h3>
+    <p>You can now talk to your friend on the phone. They will help you choose the correct answer.</p>
+    <p>After talking to your friend, please select your answer from the options below.</p>
+    <div class="popup-buttons">
+      <button id="closePhonePopup" class="popup-close-btn">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="audiencePopup" class="popup-overlay">
+  <div class="popup-content">
+    <h3>👥 Ask the Audience</h3>
+    <p>The audience has voted! Here are their results:</p>
+    <div class="audience-results">
+      <div class="audience-bar" data-letter="A"><span>A: <span id="audienceA">0</span>%</span></div>
+      <div class="audience-bar" data-letter="B"><span>B: <span id="audienceB">0</span>%</span></div>
+      <div class="audience-bar" data-letter="C"><span>C: <span id="audienceC">0</span>%</span></div>
+      <div class="audience-bar" data-letter="D"><span>D: <span id="audienceD">0</span>%</span></div>
+    </div>
+    <p>Based on the audience poll, please select your answer.</p>
+    <div class="popup-buttons">
+      <button id="closeAudiencePopup" class="popup-close-btn">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
