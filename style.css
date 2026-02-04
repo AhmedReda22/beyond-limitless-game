@@ -48,46 +48,52 @@ body {
 }
 
 .question-number {
-  width: 70px; /* Slightly smaller */
-  height: 70px; /* Slightly smaller */
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  background: linear-gradient(145deg, #0b3c6f, #041b33);
+  background: linear-gradient(145deg, #2A5762, #458696);
   border: 2px solid gold;
   color: gold;
-  font-size: 20px; /* Slightly smaller font */
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s;
+  box-shadow: 0 0 10px rgba(69, 134, 150, 0.3);
 }
 
 .question-number:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 20px gold;
+  box-shadow: 0 0 20px rgba(69, 134, 150, 0.7);
+  color: #ffffff;
 }
 
 .question-number.answered {
-  background: #00c853;
+  background: linear-gradient(145deg, #00c853, #00e676);
   border-color: #00e676;
+  color: #ffffff;
 }
 
 .start-btn {
   margin-top: 30px;
   padding: 15px 40px;
   font-size: 20px;
-  background: linear-gradient(145deg, #ffd700, #ff9500);
-  border: none;
-  border-radius: 50px;
-  color: #041b33;
+  background: linear-gradient(145deg, #2A5762, #458696);
+  border: 2px solid gold;
+  color: gold;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
+  border-radius: 50px;
+  box-shadow: 0 0 20px rgba(69, 134, 150, 0.5);
 }
 
 .start-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 25px gold;
+  box-shadow: 0 0 30px rgba(69, 134, 150, 0.8);
+  background: linear-gradient(145deg, #458696, #2A5762);
+  color: #ffffff;
+  border-color: #ffffff;
 }
-
 /* Game Page */
 .game-container {
   width: 90%;
@@ -105,7 +111,7 @@ body {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: linear-gradient(145deg, #0b3c6f, #041b33);
+  background: linear-gradient(145deg, #2A5762, #458696);
   border: 2px solid gold;
   color: gold;
   width: 50px;
@@ -114,11 +120,14 @@ body {
   cursor: pointer;
   font-size: 20px;
   transition: 0.3s;
+  box-shadow: 0 0 10px rgba(69, 134, 150, 0.3);
 }
 
 .home-btn:hover {
   transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 0 15px gold;
+  box-shadow: 0 0 20px rgba(69, 134, 150, 0.7);
+  background: linear-gradient(145deg, #458696, #2A5762);
+  color: #ffffff;
 }
 
 .game-header h1 {
@@ -146,33 +155,51 @@ body {
   height: 70px;
   border-radius: 50%;
   border: 2px solid gold;
-  background: radial-gradient(circle, #1a4fa3, #041b33);
+  background: radial-gradient(circle, #2A5762, #458696);
   color: gold;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  box-shadow: 0 0 15px rgba(69, 134, 150, 0.6);
   transition: 0.3s;
 }
 
 .lifeline:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 25px gold;
+  box-shadow: 0 0 25px rgba(69, 134, 150, 0.9);
+  background: radial-gradient(circle, #458696, #2A5762);
+  color: #ffffff;
 }
 
 .lifeline.used {
   opacity: 0.4;
   pointer-events: none;
+  box-shadow: none;
 }
 
 /* Question */
 .question-box {
-  background: linear-gradient(145deg, #0b3c6f, #041b33);
-  padding: 25px;
+  background: 
+    url("./assets/question-bg.png") no-repeat center center;
+  background-size: cover;
+  padding: 20px;
   border-radius: 15px;
   margin-bottom: 30px;
-  box-shadow: 0 0 25px rgba(0, 140, 255, 0.4);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Add overlay for better text readability */
+.question-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Ensure question text is above the overlay */
 #question {
   font-size: 24px;
   min-height: 100px;
@@ -180,9 +207,12 @@ body {
   align-items: center;
   justify-content: center;
   line-height: 1.5;
+  position: relative;
+  z-index: 2;
+  font-weight: bold;
+  color: #ffffff;
 }
-
-/* Answers */
+/* Answers - Updated with background image */
 .answers {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -190,85 +220,108 @@ body {
 }
 
 .answer {
-  background: linear-gradient(145deg, #083c6b, #021526);
-  border: 2px solid #1e90ff;
+  background: 
+    url("./assets/question-bg.png") no-repeat center center;
+  background-size: 100% 100%; /* Stretched to fill entire element */
   color: white;
   padding: 20px;
-  border-radius: 50px;
+  border-radius: 15px;
   cursor: pointer;
   font-size: 18px;
-  transition: 0.3s;
+  transition: all 0.3s ease;
   min-height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   line-height: 1.4;
+  position: relative;
+  overflow: hidden;
+  font-weight: bold;
+  border: none; /* Remove any border */
 }
 
+/* Add dark overlay for better text readability */
+.answer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+/* Ensure answer text is above overlay */
+.answer span {
+  position: relative;
+  z-index: 2;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Remove the gradient background from hover and use different effect */
 .answer:hover {
-  background: gold;
-  color: black;
-  transform: scale(1.05);
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
 }
 
+/* Change overlay on hover */
+.answer:hover::before {
+  background: rgba(11, 60, 111, 0.75);
+}
+
+/* Remove border color from correct/wrong states */
 .answer.correct {
-  background: #00c853;
-  border-color: #00e676;
-  animation: pulse 1s infinite alternate;
+  box-shadow: 0 0 25px #00c853;
+  animation: pulseCorrect 1s infinite alternate;
 }
 
+.answer.correct::before {
+  background: rgba(0, 200, 83, 0.7); /* Green overlay for correct */
+}
+
+/* Wrong answer styling */
 .answer.wrong {
-  background: #d50000;
-  border-color: #ff1744;
+  box-shadow: 0 0 25px #d50000;
 }
 
-.current-question-indicator {
-  margin-top: 20px;
-  font-size: 18px;
-  color: gold;
+.answer.wrong::before {
+  background: rgba(213, 0, 0, 0.7); /* Red overlay for wrong */
 }
 
-@keyframes pulse {
+/* Disabled state */
+.answer.disabled {
+  cursor: not-allowed;
+}
+
+.answer.disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* New pulse animation for correct answer */
+@keyframes pulseCorrect {
   from {
-    box-shadow: 0 0 10px #00c853;
+    box-shadow: 0 0 15px #00c853;
   }
   to {
-    box-shadow: 0 0 20px #00e676;
+    box-shadow: 0 0 30px #00e676;
   }
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .numbers-grid {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 350px;
-  }
-  
-  .question-number {
-    width: 60px;
-    height: 60px;
-    font-size: 18px;
-  }
-  
   .answers {
     grid-template-columns: 1fr;
     gap: 15px;
-  }
-  
-  .game-header h2 {
-    font-size: 28px;
-  }
-  
-  #question {
-    font-size: 20px;
-    min-height: 80px;
   }
   
   .answer {
     font-size: 16px;
     min-height: 70px;
     padding: 15px;
+    border-radius: 10px;
   }
 }
 
@@ -282,7 +335,7 @@ body {
 .next-btn {
   padding: 15px 40px;
   font-size: 18px;
-  background: linear-gradient(145deg, #0b3c6f, #041b33);
+  background: linear-gradient(145deg, #2A5762, #458696);
   border: 2px solid gold;
   color: gold;
   border-radius: 50px;
@@ -294,18 +347,21 @@ body {
   justify-content: center;
   gap: 10px;
   margin: 0 auto;
+  box-shadow: 0 0 15px rgba(69, 134, 150, 0.4);
 }
 
 .next-btn:hover:not(:disabled) {
   transform: scale(1.05);
-  box-shadow: 0 0 20px gold;
-  background: linear-gradient(145deg, #ffd700, #ff9500);
-  color: #041b33;
+  box-shadow: 0 0 25px rgba(69, 134, 150, 0.8);
+  background: linear-gradient(145deg, #458696, #2A5762);
+  color: #ffffff;
+  border-color: #ffffff;
 }
 
 .next-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .next-btn i {
@@ -336,14 +392,16 @@ body {
 }
 
 .popup-content {
-  background: linear-gradient(145deg, #0b3c6f, #041b33);
+  background: linear-gradient(145deg, rgba(42, 87, 98, 0.95), rgba(69, 134, 150, 0.9));
   padding: 30px;
   border-radius: 15px;
   border: 3px solid gold;
   max-width: 500px;
   width: 90%;
   text-align: center;
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+  box-shadow: 
+    0 0 30px rgba(69, 134, 150, 0.5),
+    0 0 60px rgba(42, 87, 98, 0.3);
 }
 
 .popup-content h3 {
@@ -364,19 +422,23 @@ body {
 
 .popup-close-btn {
   padding: 12px 30px;
-  background: linear-gradient(145deg, #ffd700, #ff9500);
-  border: none;
-  border-radius: 50px;
-  color: #041b33;
+  background: linear-gradient(145deg, #2A5762, #458696);
+  border: 2px solid gold;
+  color: gold;
   font-weight: bold;
   font-size: 18px;
   cursor: pointer;
   transition: 0.3s;
+  border-radius: 50px;
+  box-shadow: 0 0 10px rgba(69, 134, 150, 0.4);
 }
 
 .popup-close-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 15px gold;
+  box-shadow: 0 0 20px rgba(69, 134, 150, 0.8);
+  background: linear-gradient(145deg, #458696, #2A5762);
+  color: #ffffff;
+  border-color: #ffffff;
 }
 
 /* Audience Results */
@@ -388,13 +450,14 @@ body {
 }
 
 .audience-bar {
-  margin: 15px 0;
-  height: 40px;
-  background: linear-gradient(90deg, #1a4fa3, #041b33);
-  border-radius: 20px;
-  overflow: hidden;
   position: relative;
-  border: 2px solid #1e90ff;
+  width: 100%;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  margin: 10px 0;
+  overflow: hidden;
+  border: 2px solid rgba(255, 215, 0, 0.3);
 }
 
 .audience-bar span {
@@ -405,6 +468,7 @@ body {
   font-weight: bold;
   color: white;
   z-index: 2;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .audience-bar::before {
@@ -413,9 +477,10 @@ body {
   top: 0;
   left: 0;
   height: 100%;
-  background: linear-gradient(90deg, #00c853, #00e676);
+  background: linear-gradient(90deg, rgba(0, 200, 83, 0.8), rgba(0, 230, 118, 0.9));
   border-radius: 20px;
   transition: width 1.5s ease-out;
+  z-index: 1;
 }
 
 .audience-bar[data-letter="A"]::before { width: var(--width-a, 0%); }
@@ -424,3 +489,165 @@ body {
 .audience-bar[data-letter="D"]::before { width: var(--width-d, 0%); }
 
 
+
+/* QR Code Popup Simplified */
+.qr-main-section {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.qr-scan-message {
+  background: rgba(255, 215, 0, 0.1);
+  border: 2px solid gold;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.qr-scan-message p {
+  font-size: 18px;
+  margin: 5px 0;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.vote-help {
+  color: #00e676 !important;
+  font-size: 16px !important;
+  margin-top: 10px !important;
+}
+
+.single-qr-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.single-qr-code {
+  width: 200px;
+  height: 200px;
+  background: white;
+  border-radius: 15px;
+  padding: 15px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 3px solid gold;
+}
+
+.qr-symbol {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: repeating-linear-gradient(
+    45deg,
+    #000 0px, #000 4px,
+    #fff 4px, #fff 8px
+  );
+}
+
+.qr-pattern {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.qr-square {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: #000;
+  border: 4px solid #fff;
+}
+
+.top-left {
+  top: 20px;
+  left: 20px;
+}
+
+.top-right {
+  top: 20px;
+  right: 20px;
+}
+
+.bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+
+.qr-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25px;
+  height: 25px;
+  background: #000;
+  border: 3px solid #fff;
+}
+
+.qr-text-below {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #2A5762;
+  font-weight: bold;
+}
+
+.simple-instruction {
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(42, 87, 98, 0.3);
+  border-radius: 8px;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+/* QR Image Styles */
+.qr-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 15px;
+  border: 3px solid gold;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  background: white;
+  padding: 10px;
+  display: block;
+  margin: 0 auto;
+}
+
+.single-qr-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.qr-scan-message {
+  background: rgba(255, 215, 0, 0.1);
+  border: 2px solid gold;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.qr-scan-message p {
+  font-size: 18px;
+  margin: 5px 0;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.vote-help {
+  color: #00e676 !important;
+  font-size: 16px !important;
+  margin-top: 10px !important;
+}
+
+.simple-instruction {
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(42, 87, 98, 0.3);
+  border-radius: 8px;
+  font-size: 16px;
+  color: #ffffff;
+  text-align: center;
+}
