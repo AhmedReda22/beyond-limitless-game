@@ -8,67 +8,77 @@
 </head>
 <body>
 
-<!-- Main Menu Page -->
+<!-- ===================== VIDEO BACKGROUNDS ===================== -->
+
+<!-- Main Menu Background Video -->
+<video id="menuVideo" class="video-bg" autoplay muted loop playsinline>
+  <source src="./assets/separator.mp4" type="video/mp4">
+</video>
+
+<!-- Game Page Background Video -->
+<video id="gameVideo" class="video-bg hidden" autoplay muted loop playsinline>
+  <source src="./assets/background-game.mp4" type="video/mp4">
+</video>
+
+<!-- ===================== MAIN MENU ===================== -->
 <div id="mainMenu" class="page active">
-  
   <button id="startGame" class="start-btn">START GAME</button>
-  
-  
 </div>
 
-<!-- Game Page -->
+<!-- ===================== GAME PAGE ===================== -->
 <div id="gamePage" class="page">
   <div class="game-container">
-    <header class="game-header">
-    </header>
 
-    <!-- Lifelines - Images only, no styling -->
-<div class="lifelines-simple">
-  <button id="fifty" class="lifeline-img">
-    <img src="./assets/remove2answers.png" alt="50:50">
-  </button>
-  <button id="phone" class="lifeline-img">
-    <img src="./assets/call-friend.png" alt="Phone a Friend">
-  </button>
-  <button id="audience" class="lifeline-img">
-    <img src="./assets/ask-the-audiance.png" alt="Ask the Audience">
-  </button>
-</div>
+    <header class="game-header"></header>
 
+    <!-- Lifelines -->
+    <div class="lifelines-simple">
+      <button id="fifty" class="lifeline-img">
+        <img src="./assets/remove2answers.png" alt="50:50">
+      </button>
+      <button id="phone" class="lifeline-img">
+        <img src="./assets/call-friend.png" alt="Phone a Friend">
+      </button>
+      <button id="audience" class="lifeline-img">
+        <img src="./assets/ask-the-audiance.png" alt="Ask the Audience">
+      </button>
+    </div>
+
+    <!-- Question -->
     <div class="question-box">
       <p id="question"></p>
     </div>
 
+    <!-- Answers -->
     <div class="answers">
       <button class="answer" data-index="0"></button>
       <button class="answer" data-index="1"></button>
       <button class="answer" data-index="2"></button>
       <button class="answer" data-index="3"></button>
     </div>
-    
-    <!-- زر Next -->
+
+    <!-- Next Button -->
     <div class="next-container">
       <button id="nextBtn" class="next-btn" disabled>
         <i class="fas fa-arrow-right"></i> Next Question
       </button>
     </div>
+
   </div>
 </div>
 
-<!-- Popup للأسئلة -->
+<!-- ===================== QUESTIONS POPUP ===================== -->
 <div id="questionsPopup" class="popup-overlay">
   <div class="popup-content questions-popup">
     <h3>Choose a question to begin <i class="fas fa-question-circle"></i></h3>
-    <div class="questions-list">
-      <!-- سيتم إضافة الأسئلة ديناميكياً بواسطة JavaScript -->
-    </div>
+    <div class="questions-list"></div>
     <div class="popup-buttons">
       <button id="closeQuestionsPopup" class="popup-close-btn">Close</button>
     </div>
   </div>
 </div>
 
-<!-- Popups للـ Lifelines -->
+<!-- ===================== PHONE POPUP ===================== -->
 <div id="phonePopup" class="popup-overlay">
   <div class="popup-content">
     <h3>📞 Phone a Friend</h3>
@@ -80,31 +90,33 @@
   </div>
 </div>
 
-<!-- Audience Popup -->
+<!-- ===================== AUDIENCE POPUP ===================== -->
 <div id="audiencePopup" class="popup-overlay">
   <div class="popup-content">
     <h3>👥 Ask the Audience</h3>
-    
+
     <div class="qr-main-section">
       <div class="qr-scan-message">
         <p>Scan the QR code and vote to help the contestant!</p>
         <p class="vote-help">Your vote will help them choose the right answer!</p>
       </div>
-      
+
       <div class="single-qr-container">
         <img src="./assets/qr-code.png" alt="Scan to Vote" class="qr-image">
       </div>
-      
-      <p class="simple-instruction">Scan the QR code with your phone camera to access the voting page.</p>
+
+      <p class="simple-instruction">
+        Scan the QR code with your phone camera to access the voting page.
+      </p>
     </div>
-    
+
     <div class="popup-buttons">
       <button id="closeAudiencePopup" class="popup-close-btn">Close</button>
     </div>
   </div>
 </div>
 
-<!-- Audio Elements -->
+<!-- ===================== AUDIO ===================== -->
 <audio id="correctSound" preload="auto">
   <source src="./assets/correct-answer.mp3" type="audio/mpeg">
 </audio>
@@ -121,15 +133,17 @@
   <source src="./assets/opening-theme.wav" type="audio/wav">
 </audio>
 
+<!-- ===================== UI BUTTONS ===================== -->
+<button id="homeBtn" class="home-btn">
+  <i class="fas fa-home"></i>
+</button>
 
-      <button id="homeBtn" class="home-btn">
-        <i class="fas fa-home"></i>
-      </button>
-      
-<!-- أيقونة الأسئلة في الزاوية اليمنى السفلى -->
-  <div id="questionsIcon" class="questions-icon">
-    <i class="fas fa-list-ul"></i>
-  </div>
+<div id="questionsIcon" class="questions-icon">
+  <i class="fas fa-list-ul"></i>
+</div>
+
+<!-- ===================== SCRIPT ===================== -->
 <script src="script.js"></script>
+
 </body>
 </html>
