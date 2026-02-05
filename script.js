@@ -129,9 +129,7 @@ const questionEl = document.getElementById("question");
 const answerBtns = document.querySelectorAll(".answer");
 const startBtn = document.getElementById("startGame");
 const homeBtn = document.getElementById("homeBtn");
-const questionNumbers = document.querySelectorAll(".question-number");
 const nextBtn = document.getElementById("nextBtn");
-const musicToggleBtn = document.getElementById("musicToggle");
 
 // Audio Elements
 const correctSound = document.getElementById("correctSound");
@@ -144,6 +142,12 @@ const phonePopup = document.getElementById("phonePopup");
 const audiencePopup = document.getElementById("audiencePopup");
 const closePhonePopup = document.getElementById("closePhonePopup");
 const closeAudiencePopup = document.getElementById("closeAudiencePopup");
+
+// العناصر الجديدة للأسئلة
+const questionsIcon = document.getElementById("questionsIcon");
+const questionsPopup = document.getElementById("questionsPopup");
+const closeQuestionsPopup = document.getElementById("closeQuestionsPopup");
+const questionsList = document.querySelector(".questions-list");
 
 // Lifeline Buttons
 const fiftyLifeline = document.getElementById("fifty");
@@ -164,17 +168,73 @@ let backgroundSoundEnabled = true;
 let menuMusicEnabled = true;
 
 // Font Size Variables
-const MAX_QUESTION_LENGTH = 50; // Characters including spaces and punctuation
+const MAX_QUESTION_LENGTH = 50;
 const NORMAL_FONT_SIZE = "24px";
 const SMALL_FONT_SIZE = "20px";
 const VERY_SMALL_FONT_SIZE = "18px";
+
+// ==============================================
+// وظائف إدارة وسائل المساعدة
+// ==============================================
+
+// وظيفة: إعادة تعيين وسائل المساعدة للسؤال الحالي فقط
+function resetLifelinesForCurrentQuestion() {
+  // إعادة تعيين حالة الاستخدام لوسائل المساعدة للسؤال الحالي فقط
+  lifelinesUsed = {
+    fifty: false,
+    audience: false,
+    phone: false
+  };
+  
+  // إعادة تعيين أزرار وسائل المساعدة (إزالة حالة المستخدم)
+  [fiftyLifeline, audienceLifeline, phoneLifeline].forEach(btn => {
+    if (btn) btn.classList.remove('used');
+  });
+  
+  console.log("وسائل المساعدة أعيد تعيينها للسؤال الجديد");
+}
+
+// وظيفة: إعادة تعيين وسائل المساعدة بالكامل (للعبة الجديدة)
+function resetAllLifelines() {
+  lifelinesUsed = {
+    fifty: false,
+    audience: false,
+    phone: false
+  };
+  
+  // Reset lifeline buttons
+  [fiftyLifeline, audienceLifeline, phoneLifeline].forEach(btn => {
+    if (btn) btn.classList.remove('used');
+  });
+  
+  // Hide popups
+  phonePopup.style.display = "none";
+  audiencePopup.style.display = "none";
+  questionsPopup.style.display = "none";
+}
+
+// ==============================================
+// وظائف التنقل والعرض
+// ==============================================
+
+// Function to show/hide home button based on current page
+function updateHomeButtonVisibility() {
+  if (gamePage.classList.contains('active')) {
+    homeBtn.style.display = 'flex'; // Show in game page
+  } else {
+    homeBtn.style.display = 'none'; // Hide in main menu
+  }
+}
 
 // Navigation Functions
 function showMainMenu() {
   mainMenu.classList.add("active");
   gamePage.classList.remove("active");
-  resetLifelines();
+  resetAllLifelines();
   resetGame();
+  
+  // إخفاء زر Home
+  homeBtn.style.display = 'none';
   
   // Stop game background sound when returning to main menu
   if (backgroundSoundEnabled && !backgroundSound.paused) {
@@ -190,6 +250,9 @@ function showGamePage() {
   mainMenu.classList.remove("active");
   gamePage.classList.add("active");
   
+  // إظهار زر Home
+  homeBtn.style.display = 'flex';
+  
   // Stop menu music when starting the game
   if (menuMusicEnabled && !menuMusic.paused) {
     menuMusic.pause();
@@ -203,6 +266,9 @@ function showGamePage() {
       console.log("Auto-play prevented by browser. User interaction required.");
     });
   }
+  
+  // عند بدء اللعبة، تأكد من أن وسائل المساعدة متاحة
+  resetLifelinesForCurrentQuestion();
 }
 
 // Function to play menu music
@@ -211,7 +277,6 @@ function playMenuMusic() {
     menuMusic.currentTime = 0;
     menuMusic.play().catch(e => {
       console.log("Menu music play failed:", e);
-      // If autoplay is blocked, we'll try again on user interaction
     });
   }
 }
@@ -224,22 +289,9 @@ function stopMenuMusic() {
   }
 }
 
-// Function to toggle menu music
-function toggleMenuMusic() {
-  menuMusicEnabled = !menuMusicEnabled;
-  
-  if (musicToggleBtn) {
-    if (menuMusicEnabled) {
-      musicToggleBtn.innerHTML = '<i class="fas fa-volume-up"></i> Music';
-      musicToggleBtn.classList.remove("muted");
-      playMenuMusic();
-    } else {
-      musicToggleBtn.innerHTML = '<i class="fas fa-volume-mute"></i> Music';
-      musicToggleBtn.classList.add("muted");
-      stopMenuMusic();
-    }
-  }
-}
+// ==============================================
+// وظائف إدارة اللعبة
+// ==============================================
 
 // Reset game state
 function resetGame() {
@@ -249,12 +301,6 @@ function resetGame() {
   selectedAnswerIndex = null;
   nextBtn.disabled = true;
   
-  // Reset question numbers display
-  questionNumbers.forEach((btn, index) => {
-    btn.textContent = index + 1;
-    btn.classList.remove("answered");
-  });
-  
   // Reset answer buttons
   answerBtns.forEach(btn => {
     btn.classList.remove("correct", "wrong", "disabled");
@@ -263,6 +309,12 @@ function resetGame() {
     btn.disabled = false;
     btn.style.pointerEvents = "auto";
   });
+  
+  // إنشاء قائمة الأسئلة بعد إعادة تعيين اللعبة
+  createQuestionsList();
+  
+  // إعادة تعيين وسائل المساعدة
+  resetAllLifelines();
 }
 
 // Function to adjust question font size
@@ -298,6 +350,62 @@ function adjustAnswerFontSize(answerTexts) {
   });
 }
 
+// ==============================================
+// وظائف قائمة الأسئلة
+// ==============================================
+
+// إنشاء قائمة الأسئلة في الـ Popup
+function createQuestionsList() {
+  if (!questionsList) return;
+  
+  questionsList.innerHTML = "";
+  
+  questions.forEach((q, index) => {
+    const questionItem = document.createElement("div");
+    questionItem.className = "question-item";
+    questionItem.dataset.index = index;
+    
+    const isAnswered = answeredQuestions.has(index);
+    if (isAnswered) {
+      questionItem.classList.add("answered");
+    }
+    
+    questionItem.innerHTML = `
+      <div class="question-number">Question ${index + 1}</div>
+      <div class="question-text">${q.question}</div>
+    `;
+    
+    questionItem.addEventListener("click", () => {
+      // السماح باختيار السؤال حتى إذا كان قد تمت الإجابة عليه
+      loadQuestion(index);
+      showGamePage();
+      
+      // إعادة تعيين وسائل المساعدة عند اختيار سؤال جديد
+      resetLifelinesForCurrentQuestion();
+      
+      // إغلاق الـ Popup
+      questionsPopup.style.display = "none";
+    });
+    
+    questionsList.appendChild(questionItem);
+  });
+}
+
+// تحديث قائمة الأسئلة في الـ Popup
+function updateQuestionsList() {
+  const questionItems = document.querySelectorAll('.question-item');
+  questionItems.forEach(item => {
+    const index = parseInt(item.dataset.index);
+    if (answeredQuestions.has(index)) {
+      item.classList.add('answered');
+    }
+  });
+}
+
+// ==============================================
+// وظائف تحميل الأسئلة
+// ==============================================
+
 // Load Question
 function loadQuestion(questionIndex) {
   currentQuestion = questionIndex;
@@ -322,21 +430,18 @@ function loadQuestion(questionIndex) {
   // Adjust answer font sizes
   adjustAnswerFontSize(q.answers);
   
-  // Mark this question as answered in the grid
-  answeredQuestions.add(questionIndex);
-  
-  // Update the number grid
-  if (questionNumbers[questionIndex]) {
-    questionNumbers[questionIndex].classList.add("answered");
-    questionNumbers[questionIndex].textContent = "✓";
-  }
+  // تحديث الـ Popup ليعلم أن السؤال تمت الإجابة عليه
+  updateQuestionsList();
   
   // Reset next button
   nextBtn.disabled = true;
   answeredCorrectly = false;
   selectedAnswerIndex = null;
   
-  // Reset lifelines for the new question (if not used yet)
+  // إعادة تعيين وسائل المساعدة لهذا السؤال الجديد - الجزء المهم!
+  resetLifelinesForCurrentQuestion();
+  
+  // Reset answer buttons state
   resetAnswerButtonsState();
   
   // Start background sound for new question
@@ -357,6 +462,10 @@ function resetAnswerButtonsState() {
     }
   });
 }
+
+// ==============================================
+// أحداث الأزرار والإجابات
+// ==============================================
 
 // Answer Selection
 answerBtns.forEach(btn => {
@@ -390,6 +499,9 @@ answerBtns.forEach(btn => {
       
       // Enable next button
       nextBtn.disabled = false;
+      
+      // Mark question as answered
+      answeredQuestions.add(currentQuestion);
     } else {
       btn.classList.add("wrong");
       answerBtns[correct].classList.add("correct");
@@ -403,6 +515,9 @@ answerBtns.forEach(btn => {
       
       // Still enable next button even if wrong
       nextBtn.disabled = false;
+      
+      // Mark question as answered
+      answeredQuestions.add(currentQuestion);
     }
   });
 });
@@ -433,6 +548,10 @@ nextBtn.addEventListener("click", () => {
   }
 });
 
+// ==============================================
+// وظائف وسائل المساعدة (Lifelines)
+// ==============================================
+
 // Phone Lifeline
 phoneLifeline.addEventListener("click", () => {
   if (lifelinesUsed.phone || selectedAnswerIndex !== null) return;
@@ -448,13 +567,6 @@ phoneLifeline.addEventListener("click", () => {
 // Close Phone Popup
 closePhonePopup.addEventListener("click", () => {
   phonePopup.style.display = "none";
-  
-  // Simulate friend's answer after closing popup
-  setTimeout(() => {
-    const correct = questions[currentQuestion].correct;
-    const confidence = Math.random() > 0.2 ? "highly confident" : "not completely sure";
-    alert(`📞 Your friend says: "I'm ${confidence} it's ${String.fromCharCode(65 + correct)}"`);
-  }, 500);
 });
 
 // Audience Lifeline
@@ -496,22 +608,23 @@ fiftyLifeline.addEventListener("click", () => {
   lifelinesUsed.fifty = true;
 });
 
-// Reset lifelines
-function resetLifelines() {
-  lifelinesUsed = {
-    fifty: false,
-    audience: false,
-    phone: false
-  };
-  
-  // Reset lifeline buttons
-  [fiftyLifeline, audienceLifeline, phoneLifeline].forEach(btn => {
-    if (btn) btn.classList.remove('used');
+// ==============================================
+// أحداث الأزرار العامة
+// ==============================================
+
+// فتح Popup الأسئلة
+if (questionsIcon) {
+  questionsIcon.addEventListener("click", () => {
+    createQuestionsList();
+    questionsPopup.style.display = "flex";
   });
-  
-  // Hide popups
-  phonePopup.style.display = "none";
-  audiencePopup.style.display = "none";
+}
+
+// إغلاق Popup الأسئلة
+if (closeQuestionsPopup) {
+  closeQuestionsPopup.addEventListener("click", () => {
+    questionsPopup.style.display = "none";
+  });
 }
 
 // Event Listeners for Navigation
@@ -524,26 +637,6 @@ startBtn.addEventListener("click", () => {
 });
 
 homeBtn.addEventListener("click", showMainMenu);
-
-// Music Toggle Event Listener
-if (musicToggleBtn) {
-  musicToggleBtn.addEventListener("click", toggleMenuMusic);
-}
-
-// Number Grid Click Events
-questionNumbers.forEach(numberBtn => {
-  numberBtn.addEventListener("click", () => {
-    const questionIndex = parseInt(numberBtn.dataset.question);
-    if (!answeredQuestions.has(questionIndex) && questionIndex < questions.length) {
-      // Ensure background sound is running for the selected question
-      if (backgroundSoundEnabled) {
-        backgroundSound.currentTime = 0;
-      }
-      loadQuestion(questionIndex);
-      showGamePage();
-    }
-  });
-});
 
 // Handle user interaction for browser autoplay policies
 document.addEventListener('click', function() {
@@ -567,56 +660,76 @@ window.addEventListener('click', (e) => {
   if (e.target === audiencePopup) {
     audiencePopup.style.display = "none";
   }
+  if (e.target === questionsPopup) {
+    questionsPopup.style.display = "none";
+  }
 });
 
-// Initialize the game
-showMainMenu();
+// ==============================================
+// التهيئة عند تحميل الصفحة
+// ==============================================
 
-// Also try to play menu music immediately on page load
+// استدعاء الدالة عند التحميل
 document.addEventListener('DOMContentLoaded', function() {
   // Small delay to ensure page is loaded
   setTimeout(() => {
     if (mainMenu.classList.contains("active")) {
       playMenuMusic();
     }
+    // إنشاء قائمة الأسئلة عند تحميل الصفحة
+    createQuestionsList();
+    
+    // تحديث ظهور زر Home
+    updateHomeButtonVisibility();
   }, 500);
 });
+
+// ==============================================
+// اختصارات لوحة المفاتيح
+// ==============================================
 
 // Add keyboard shortcuts
 document.addEventListener('keydown', (e) => {
   // Only handle keyboard shortcuts in game page
-  if (!gamePage.classList.contains('active')) return;
-  
-  // Number keys 1-4 for answers
-  if (e.key >= '1' && e.key <= '4' && selectedAnswerIndex === null) {
-    const index = parseInt(e.key) - 1;
-    if (index < answerBtns.length) {
-      answerBtns[index].click();
+  if (gamePage.classList.contains('active')) {
+    // Number keys 1-4 for answers
+    if (e.key >= '1' && e.key <= '4' && selectedAnswerIndex === null) {
+      const index = parseInt(e.key) - 1;
+      if (index < answerBtns.length) {
+        answerBtns[index].click();
+      }
+    }
+    
+    // Space or Enter for next question
+    if ((e.key === ' ' || e.key === 'Enter') && !nextBtn.disabled) {
+      nextBtn.click();
+    }
+    
+    // F for 50:50
+    if (e.key === 'f' && !lifelinesUsed.fifty && selectedAnswerIndex === null) {
+      fiftyLifeline.click();
+    }
+    
+    // A for audience
+    if (e.key === 'a' && !lifelinesUsed.audience && selectedAnswerIndex === null) {
+      audienceLifeline.click();
+    }
+    
+    // P for phone
+    if (e.key === 'p' && !lifelinesUsed.phone && selectedAnswerIndex === null) {
+      phoneLifeline.click();
     }
   }
   
-  // Space or Enter for next question
-  if ((e.key === ' ' || e.key === 'Enter') && !nextBtn.disabled) {
-    nextBtn.click();
-  }
-  
-  // F for 50:50
-  if (e.key === 'f' && !lifelinesUsed.fifty && selectedAnswerIndex === null) {
-    fiftyLifeline.click();
-  }
-  
-  // A for audience
-  if (e.key === 'a' && !lifelinesUsed.audience && selectedAnswerIndex === null) {
-    audienceLifeline.click();
-  }
-  
-  // P for phone
-  if (e.key === 'p' && !lifelinesUsed.phone && selectedAnswerIndex === null) {
-    phoneLifeline.click();
-  }
-  
-  // M for music toggle (in main menu)
-  if (e.key === 'm' && mainMenu.classList.contains("active") && musicToggleBtn) {
-    toggleMenuMusic();
+  // Q لفتح قائمة الأسئلة في القائمة الرئيسية
+  if ((e.key === 'q' || e.key === 'Q') && mainMenu.classList.contains("active")) {
+    if (questionsIcon) questionsIcon.click();
   }
 });
+
+// ==============================================
+// تهيئة اللعبة
+// ==============================================
+
+// Initialize the game
+showMainMenu();
