@@ -7,15 +7,14 @@
 
 body {
   height: 100vh;
-  background: 
-    url("./assets/bg.jpeg") no-repeat center center fixed;
-  background-size: 100% 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
   overflow: hidden;
+  background: black;
 }
+
 
 /* Page system */
 .page {
@@ -39,7 +38,7 @@ body {
 .start-btn {
   position: absolute;
   left: 120px;
-  bottom: 120px;
+  bottom: 350px;
   padding: 15px 40px;
   font-size: 40px;
   background: linear-gradient(145deg, #2A5762, #458696);
@@ -227,11 +226,7 @@ body {
   box-shadow: none;
 }
 
-#gamePage {
-  background: 
-    url("./assets/theme2.jpg") no-repeat center center fixed;
-  background-size: 100% 100%;
-}
+
 
 /* Question */
 .question-box {
@@ -774,4 +769,27 @@ body {
 .lifeline-img.used {
   opacity: 0.4;
   pointer-events: none;
+}
+
+/* ===== Video Background System ===== */
+.video-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.video-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1;
+}
+
+.video-bg.hidden {
+  display: none;
 }
