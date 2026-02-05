@@ -8,9 +8,8 @@
 body {
   height: 100vh;
   background: 
-    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)),
     url("./assets/bg.jpeg") no-repeat center center fixed;
-  background-size: cover;
+  background-size: 100% 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,61 +29,40 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;   /* بدل center */
+  padding-top: 40px;            /* مسافة بسيطة من فوق */
 }
+
+
 
 /* Main Menu */
-.question-numbers {
-  display: flex;
-  justify-content: center;
-  margin: 30px 0;
-}
-
-.numbers-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Changed from 5 to 4 columns for 12 questions */
-  gap: 15px;
-  max-width: 500px; /* Adjusted max-width */
-}
-
-.question-number {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #2A5762, #458696);
-  border: 2px solid gold;
-  color: gold;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 0 10px rgba(69, 134, 150, 0.3);
-}
-
-.question-number:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(69, 134, 150, 0.7);
-  color: #ffffff;
-}
-
-.question-number.answered {
-  background: linear-gradient(145deg, #00c853, #00e676);
-  border-color: #00e676;
-  color: #ffffff;
-}
-
 .start-btn {
-  margin-top: 30px;
+  position: absolute;
+  left: 120px;
+  bottom: 120px;
   padding: 15px 40px;
-  font-size: 20px;
+  font-size: 40px;
   background: linear-gradient(145deg, #2A5762, #458696);
-  border: 2px solid gold;
-  color: gold;
+
+  /* Gold gradient border */
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(145deg, #2A5762, #458696),
+    linear-gradient(to right, #EBAE53, #F6D9AF);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  /* Gold gradient text */
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(to right, #EBAE53, #F6D9AF);
+
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
   border-radius: 50px;
-  box-shadow: 0 0 20px rgba(69, 134, 150, 0.5);
+  box-shadow: 0 0 25px rgba(235, 174, 83, 0.5);
 }
 
 .start-btn:hover {
@@ -94,40 +72,113 @@ body {
   color: #ffffff;
   border-color: #ffffff;
 }
-/* Game Page */
-.game-container {
-  width: 90%;
-  max-width: 900px;
-  text-align: center;
-}
 
-.game-header {
-  position: relative;
-  margin-bottom: 30px;
-}
-
-.home-btn {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+/* ====== أيقونة الأسئلة في الزاوية اليمنى السفلى ====== */
+.questions-icon {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  width: 60px;
+  height: 60px;
   background: linear-gradient(145deg, #2A5762, #458696);
   border: 2px solid gold;
   color: gold;
-  width: 50px;
-  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s;
+  box-shadow: 0 0 15px rgba(69, 134, 150, 0.6);
+}
+
+.questions-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px rgba(69, 134, 150, 0.9);
+  background: linear-gradient(145deg, #458696, #2A5762);
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+/* ====== زر البيت فوق أيقونة الأسئلة ====== */
+.home-btn {
+  position: fixed;
+  right: 30px;
+  bottom: 110px; /* فوق أيقونة الأسئلة بـ 80px (60 + 10 مسافة) */
+  background: linear-gradient(145deg, #2A5762, #458696);
+  border: 2px solid gold;
+  color: gold;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 24px;
   transition: 0.3s;
   box-shadow: 0 0 10px rgba(69, 134, 150, 0.3);
+  z-index: 101; /* أعلى من أيقونة الأسئلة */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none; /* مخفي افتراضياً */
 }
 
 .home-btn:hover {
-  transform: translateY(-50%) scale(1.1);
+  transform: scale(1.1);
   box-shadow: 0 0 20px rgba(69, 134, 150, 0.7);
   background: linear-gradient(145deg, #458696, #2A5762);
   color: #ffffff;
+  border-color: #ffffff;
+}
+
+/* ====== إخفاء زر البيت في القائمة الرئيسية ====== */
+#mainMenu .home-btn {
+  display: none !important;
+}
+
+/* ====== إخفاء زر البيت القديم من الهيدر ====== */
+.game-header .home-btn {
+  display: none !important;
+}
+
+/* ====== تعديلات للهواتف المحمولة ====== */
+@media (max-width: 768px) {
+  .questions-icon {
+    right: 20px;
+    bottom: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  
+  .home-btn {
+    right: 20px;
+    bottom: 90px; /* فوق أيقونة الأسئلة بـ 70px (50 + 20 مسافة) */
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+}
+
+/* ====== إزالة أي أنماط متضاربة أخرى ====== */
+.game-header .home-btn {
+  display: none !important;
+}
+
+/* Game Page */
+.game-container {
+  width: 100%;
+  max-width: 1100px;
+  text-align: center;
+  margin-top: 20px;   /* بدل ما تكون في نص الشاشة */
+}
+
+
+
+.game-header {
+  position: relative;
+  margin-bottom: -50px;
 }
 
 .game-header h1 {
@@ -176,17 +227,28 @@ body {
   box-shadow: none;
 }
 
+#gamePage {
+  background: 
+    url("./assets/theme2.jpg") no-repeat center center fixed;
+  background-size: 100% 100%;
+}
+
 /* Question */
 .question-box {
-  background: 
-    url("./assets/question-bg.png") no-repeat center center;
+  width: 100vw;                 /* عرض الشاشة كامل */
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+
+  background: url("./assets/question-bg.png") no-repeat center center;
   background-size: cover;
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 30px;
+
+  padding: 25px 40px;
+  margin-bottom: 10px;
   position: relative;
   overflow: hidden;
 }
+
+
 
 /* Add overlay for better text readability */
 .question-box::before {
@@ -201,8 +263,11 @@ body {
 
 /* Ensure question text is above the overlay */
 #question {
-  font-size: 24px;
-  min-height: 100px;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  font-size: 26px;
+  min-height: 90px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -211,47 +276,55 @@ body {
   z-index: 2;
   font-weight: bold;
   color: #ffffff;
-}
-/* Answers - Updated with background image */
-.answers {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  text-align: center;
 }
 
+
+/* Answers */
 .answer {
-  background: 
-    url("./assets/question-bg.png") no-repeat center center;
-  background-size: 100% 100%; /* Stretched to fill entire element */
+  background: none !important;
+  background-color: transparent !important;
+  border: none;
+  box-shadow: none;
+
   color: white;
   padding: 20px;
-  border-radius: 15px;
-  cursor: pointer;
-  font-size: 18px;
-  transition: all 0.3s ease;
   min-height: 80px;
+
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  line-height: 1.4;
+
   position: relative;
-  overflow: hidden;
-  font-weight: bold;
-  border: none; /* Remove any border */
+  z-index: 2;
+  cursor: pointer;
 }
 
-/* Add dark overlay for better text readability */
-.answer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  transition: all 0.3s ease;
+
+
+.answers {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+
+  background: url("./assets/answers.png") no-repeat center center;
+  background-size: 100% auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+
+  padding: 40px 80px 50px;
+  box-sizing: border-box;
 }
+
+
+
+
 
 /* Ensure answer text is above overlay */
 .answer span {
@@ -260,37 +333,33 @@ body {
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-/* Remove the gradient background from hover and use different effect */
 .answer:hover {
   transform: scale(1.02);
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
 }
 
-/* Change overlay on hover */
 .answer:hover::before {
-  background: rgba(11, 60, 111, 0.75);
+  background: rgba(11, 60, 111, 0.55);
 }
 
-/* Remove border color from correct/wrong states */
-.answer.correct {
+
+/* .answer.correct {
   box-shadow: 0 0 25px #00c853;
+  border-radius: 80%;
   animation: pulseCorrect 1s infinite alternate;
 }
 
 .answer.correct::before {
-  background: rgba(0, 200, 83, 0.7); /* Green overlay for correct */
-}
+  background: rgba(0, 200, 83, 0.7);
+} */
 
-/* Wrong answer styling */
-.answer.wrong {
+/* .answer.wrong {
   box-shadow: 0 0 25px #d50000;
 }
 
 .answer.wrong::before {
-  background: rgba(213, 0, 0, 0.7); /* Red overlay for wrong */
-}
+  background: rgba(213, 0, 0, 0.7);
+} */
 
-/* Disabled state */
 .answer.disabled {
   cursor: not-allowed;
 }
@@ -300,7 +369,6 @@ body {
   box-shadow: none;
 }
 
-/* New pulse animation for correct answer */
 @keyframes pulseCorrect {
   from {
     box-shadow: 0 0 15px #00c853;
@@ -309,22 +377,6 @@ body {
     box-shadow: 0 0 30px #00e676;
   }
 }
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .answers {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-  
-  .answer {
-    font-size: 16px;
-    min-height: 70px;
-    padding: 15px;
-    border-radius: 10px;
-  }
-}
-
 
 /* Next Button Styles */
 .next-container {
@@ -367,15 +419,6 @@ body {
 .next-btn i {
   font-size: 20px;
 }
-
-/* Current question indicator */
-.current-question {
-  font-size: 18px;
-  color: gold;
-  margin-top: 10px;
-  text-align: center;
-}
-
 
 /* Popup Styles */
 .popup-overlay {
@@ -441,54 +484,69 @@ body {
   border-color: #ffffff;
 }
 
-/* Audience Results */
-.audience-results {
+/* Popup خاص بعرض الأسئلة */
+.questions-popup {
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.questions-popup h3 {
+  color: gold;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.questions-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
   margin: 20px 0;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
 }
 
-.audience-bar {
-  position: relative;
-  width: 100%;
-  height: 40px;
+.question-item {
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  margin: 10px 0;
-  overflow: hidden;
   border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
 }
 
-.audience-bar span {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
+.question-item:hover {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: gold;
+  transform: translateY(-3px);
+}
+
+.question-item.answered {
+  background: rgba(0, 200, 83, 0.2);
+  border-color: #00c853;
+  color: #00c853;
+}
+
+.question-number {
   font-weight: bold;
-  color: white;
-  z-index: 2;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: gold;
 }
 
-.audience-bar::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background: linear-gradient(90deg, rgba(0, 200, 83, 0.8), rgba(0, 230, 118, 0.9));
-  border-radius: 20px;
-  transition: width 1.5s ease-out;
-  z-index: 1;
+.question-item.answered .question-number {
+  color: #00c853;
 }
 
-.audience-bar[data-letter="A"]::before { width: var(--width-a, 0%); }
-.audience-bar[data-letter="B"]::before { width: var(--width-b, 0%); }
-.audience-bar[data-letter="C"]::before { width: var(--width-c, 0%); }
-.audience-bar[data-letter="D"]::before { width: var(--width-d, 0%); }
-
-
+.question-text {
+  font-size: 14px;
+  line-height: 1.4;
+  height: 60px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
 
 /* QR Code Popup Simplified */
 .qr-main-section {
@@ -523,85 +581,6 @@ body {
   margin: 20px 0;
 }
 
-.single-qr-code {
-  width: 200px;
-  height: 200px;
-  background: white;
-  border-radius: 15px;
-  padding: 15px;
-  position: relative;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  border: 3px solid gold;
-}
-
-.qr-symbol {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  background: repeating-linear-gradient(
-    45deg,
-    #000 0px, #000 4px,
-    #fff 4px, #fff 8px
-  );
-}
-
-.qr-pattern {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.qr-square {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  background: #000;
-  border: 4px solid #fff;
-}
-
-.top-left {
-  top: 20px;
-  left: 20px;
-}
-
-.top-right {
-  top: 20px;
-  right: 20px;
-}
-
-.bottom-left {
-  bottom: 20px;
-  left: 20px;
-}
-
-.qr-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 25px;
-  height: 25px;
-  background: #000;
-  border: 3px solid #fff;
-}
-
-.qr-text-below {
-  margin-top: 15px;
-  font-size: 18px;
-  color: #2A5762;
-  font-weight: bold;
-}
-
-.simple-instruction {
-  margin-top: 15px;
-  padding: 10px;
-  background: rgba(42, 87, 98, 0.3);
-  border-radius: 8px;
-  font-size: 16px;
-  color: #ffffff;
-}
-
-/* QR Image Styles */
 .qr-image {
   width: 200px;
   height: 200px;
@@ -614,34 +593,6 @@ body {
   margin: 0 auto;
 }
 
-.single-qr-container {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-.qr-scan-message {
-  background: rgba(255, 215, 0, 0.1);
-  border: 2px solid gold;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.qr-scan-message p {
-  font-size: 18px;
-  margin: 5px 0;
-  color: #ffffff;
-  font-weight: bold;
-}
-
-.vote-help {
-  color: #00e676 !important;
-  font-size: 16px !important;
-  margin-top: 10px !important;
-}
-
 .simple-instruction {
   margin-top: 15px;
   padding: 10px;
@@ -650,4 +601,177 @@ body {
   font-size: 16px;
   color: #ffffff;
   text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .answers {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .answer {
+    font-size: 16px;
+    min-height: 70px;
+    padding: 15px;
+    border-radius: 10px;
+  }
+  
+  .questions-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .question-text {
+    height: auto;
+    -webkit-line-clamp: 2;
+  }
+  
+  .start-btn {
+    left: 20px;
+    bottom: 20px;
+    padding: 12px 30px;
+    font-size: 18px;
+  }
+  
+  .popup-content {
+    max-width: 90%;
+    padding: 20px;
+  }
+  
+  .popup-content h3 {
+    font-size: 24px;
+  }
+  
+  .qr-image {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+/* Lifelines Container - Vertical Layout */
+.lifelines-container {
+  position: fixed;
+  left: 30px;
+  bottom: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  z-index: 50;
+}
+
+.lifeline-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.lifeline {
+  width: auto;
+  height: auto;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+}
+
+.lifeline:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+}
+
+.lifeline.used {
+  opacity: 0.4;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.lifeline.used .lifeline-icon {
+  filter: grayscale(100%);
+}
+
+.lifeline-icon {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+.lifeline:hover .lifeline-icon {
+  filter: brightness(1.2);
+}
+
+.lifeline-label {
+  color: gold;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+/* Adjust for mobile */
+@media (max-width: 768px) {
+  .lifelines-container {
+    left: 20px;
+    bottom: 100px;
+    gap: 15px;
+  }
+  
+  .lifeline-icon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .lifeline-label {
+    font-size: 12px;
+    padding: 2px 6px;
+  }
+}
+
+/* Remove any conflicting lifeline styles */
+.lifelines {
+  display: none;
+}
+
+/* Lifelines - بسيط بدون أي تأثيرات */
+.lifelines-simple {
+  position: fixed;
+  left: 30px;
+  bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 50;
+}
+
+.lifeline-img {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: block;
+}
+
+.lifeline-img img {
+  width: 150px; 
+  height: auto;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.lifeline-img.used {
+  opacity: 0.4;
+  pointer-events: none;
 }
